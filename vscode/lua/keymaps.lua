@@ -48,6 +48,14 @@ vim.keymap.set("n", "<C-j>", "<cmd>call VSCodeNotify('workbench.action.navigateD
 vim.keymap.set("n", "<C-k>", "<cmd>call VSCodeNotify('workbench.action.navigateUp')<CR>", {noremap=true, silent=true})
 vim.keymap.set("n", "<C-l>", "<cmd>call VSCodeNotify('workbench.action.navigateRight')<CR>", {noremap=true, silent=true})
 
+-- Manage Window Splits
+vim.keymap.set("n", "<leader>sv", "<cmd>call VSCodeNotify('workbench.action.splitEditorRight')<CR>", {silent=true})
+vim.keymap.set("n", "<leader>sh", "<cmd>call VSCodeNotify('workbench.action.splitEditorDown')<CR>", {silent=true})
+vim.keymap.set("n", "<leader>se", "<C-w>=", {silent=true})
+
+-- Manage Tabs
+vim.keymap.set("n", "<leader>to", "<cmd>call VSCodeNotify('workbench.action.files.newUntitledFile')<CR>", {silent=true})
+
 -- Move lines in visual mode
 vim.keymap.set("x", "J", ":m '>+1<CR>gv", {noremap=true, silent=true})
 vim.keymap.set("x", "K", ":m '<-2<CR>gv", {noremap=true, silent=true})
@@ -63,6 +71,8 @@ vim.keymap.set("n", "<leader>c", ":nohl<CR>", {noremap=true, silent=true})
 -- Toggle panes/open explorer & find panes
 vim.keymap.set("n", "<leader>s", "<cmd>call VSCodeNotify('workbench.action.toggleSidebarVisibility')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>m", "<cmd>call VSCodeNotify('editor.action.toggleMinimap')<CR>", {silent=true})
+vim.keymap.set("n", "<leader>o", "<cmd>call VSCodeNotify('workbench.action.output.toggleOutput')<CR>", {silent=true})
+vim.keymap.set("n", "<leader>p", "<cmd>call VSCodeNotify('workbench.action.togglePanel')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>t", "<cmd>call VSCodeNotify('workbench.action.terminal.toggleTerminal')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>d", "<cmd>call VSCodeNotify('editor.action.showHover')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>a", "<cmd>call VSCodeNotify('editor.action.quickFix')<CR>", {silent=true})

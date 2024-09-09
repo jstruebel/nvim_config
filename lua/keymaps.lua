@@ -28,6 +28,15 @@ if not vim.g.vscode then
     vim.keymap.set("n", "<C-right>", ":vertical resize -2<CR>", {noremap=true, silent=true})
     vim.keymap.set("n", "<C-left>", ":vertical resize +2<CR>", {noremap=true, silent=true})
 
+    -- Manage Window Splits
+    vim.keymap.set("n", "<leader>sv", "<C-w>v", {silent=true})
+    vim.keymap.set("n", "<leader>sh", "<C-w>s", {silent=true})
+    vim.keymap.set("n", "<leader>se", "<C-w>=", {silent=true})
+    
+    -- Manage Tabs
+    vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", {silent=true})
+    vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", {silent=true})
+
     --Exit insert mode in terminal (default is confusing)
     vim.keymap.set("t", "<C-[>", "<C-\\><C-N>", {noremap=true, silent=true})
 
