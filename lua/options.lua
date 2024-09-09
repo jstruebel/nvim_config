@@ -41,7 +41,11 @@ if not vim.g.vscode then
     -- turn on termguicolors if supported
     -- supported terminals include iTerm2, Alacritty, Kitty, Windows Terminal
     -- Should be set by default if terminal with > 256 colors detected
-    --opt.termguicolors = true
+    -- if string.match(os.getenv("TERM"), "-256colors") then
+    --     opt.termguicolors = false
+    -- else
+    --     opt.termguicolors = true
+    -- end
     opt.background = "dark"                             -- choose dark background when supported by colorscheme
     opt.signcolumn = "yes"                              -- show sign column so that text doesn't shift
     opt.syntax = "ON"                                   -- enable syntax highlighting

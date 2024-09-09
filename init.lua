@@ -5,9 +5,9 @@
 --   vscode-neovim extension
 
 -- set leader here before any configurations loaded
-vim.keymap.set("", "<Space>", "<Nop>")
-vim.g.mapleader = ";" -- use space
-vim.g.maplocalleader = ";" -- use space
+vim.g.mapleader = " " -- use space
+vim.g.maplocalleader = " " -- use space
+
 
 if not vim.g.vscode then
     -- set variables to control configuration
@@ -18,10 +18,9 @@ end
 
 require "options"
 require "keymaps"
--- require "lazy-config"
--- 
+require "lazy-config"
 
 if not vim.g.vscode then
     -- terminal mode configurations
-    
+    require "colorscheme"
 end
