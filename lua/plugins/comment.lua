@@ -1,7 +1,8 @@
 return {
    'numToStr/Comment.nvim', 
+   event = "VeryLazy",
    enabled = not vim.g.vscode,
-   config = function ()
-        require("Comment").setup()
-   end,
+   opts = {
+    ignore = '^$',
+   },
 }
