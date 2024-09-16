@@ -23,6 +23,7 @@ require "lazy-config"
 if not vim.g.vscode then
     -- terminal mode configurations
     require "colorscheme"
+    require "statusline"
     if vim.g.is_ide then
         -- Add IDE Plugin Configuration
         --completion
