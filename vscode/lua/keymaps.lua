@@ -65,9 +65,6 @@ vim.keymap.set("n", "za", "<cmd>call VSCodeNotify('editor.toggleFold')<CR>", {no
 vim.keymap.set("n", "zR", "<cmd>call VSCodeNotify('editor.unfoldAll')<CR>", {noremap=true, silent=true})
 vim.keymap.set("n", "zM", "<cmd>call VSCodeNotify('editor.foldAll')<CR>", {noremap=true, silent=true})
 
--- Clear search highlights
-vim.keymap.set("n", "<leader>c", ":nohl<CR>", {noremap=true, silent=true})
-
 -- Toggle panes/open explorer & find panes
 vim.keymap.set("n", "<leader>s", "<cmd>call VSCodeNotify('workbench.action.toggleSidebarVisibility')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>m", "<cmd>call VSCodeNotify('editor.action.toggleMinimap')<CR>", {silent=true})
@@ -77,7 +74,7 @@ vim.keymap.set("n", "<leader>t", "<cmd>call VSCodeNotify('workbench.action.termi
 vim.keymap.set("n", "<leader>d", "<cmd>call VSCodeNotify('editor.action.showHover')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>a", "<cmd>call VSCodeNotify('editor.action.quickFix')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>g", "<cmd>call VSCodeNotify('workbench.view.scm')<CR>", {silent=true})
-vim.keymap.set("n", "<leader>b", "<cmd>call VSCodeNotify('editor.debug.action.toggleBreakpoint')<CR>", {silent=true})
+vim.keymap.set("n", "<leader>bp", "<cmd>call VSCodeNotify('editor.debug.action.toggleBreakpoint')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>sp", "<cmd>call VSCodeNotify('workbench.actions.view.problems')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>cn", "<cmd>call VSCodeNotify('notifications.clearAll')<CR>", {silent=true})
 vim.keymap.set("n", "<leader>e", "<cmd>call VSCodeNotify('workbench.view.explorer')<CR>", {silent=true})

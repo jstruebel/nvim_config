@@ -9,6 +9,17 @@ vim.keymap.set("v", ">", ">gv", {noremap=true, silent=true})
 vim.keymap.set("x", "<", "<gv", {noremap=true, silent=true})
 vim.keymap.set("x", ">", ">gv", {noremap=true, silent=true})
 
+-- Clear search highlights
+vim.keymap.set("n", "<leader>c", ":nohl<CR>", {noremap=true, silent=true})
+
+-- Dump helpful information to a new buffer
+-- Reference: https://tech.serhatteker.com/post/2022-07/dump-command-output-to-buffer-in-neovim/
+vim.keymap.set("n", "<leader>?d", "<cmd>new|pu=execute('digraphs')<CR>", {noremap=true, silent=true})
+vim.keymap.set("n", "<leader>?k", "<cmd>new|pu=execute('map')<CR>", {noremap=true, silent=true})
+vim.keymap.set("n", "<leader>?kn", "<cmd>new|pu=execute('nmap')<CR>", {noremap=true, silent=true})
+vim.keymap.set("n", "<leader>?ki", "<cmd>new|pu=execute('imap')<CR>", {noremap=true, silent=true})
+vim.keymap.set("n", "<leader>?kv", "<cmd>new|pu=execute('vmap')<CR>", {noremap=true, silent=true})
+
 if not vim.g.vscode then
     -- Move between windows/splits
     vim.keymap.set("n", "<C-h>", "<C-w>h", {noremap=true, silent=true})
@@ -36,7 +47,13 @@ if not vim.g.vscode then
     -- Manage Tabs
     vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", {silent=true})
     vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", {silent=true})
+    vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", {silent=true})
 
+    -- Navigate Buffers
+    vim.keymap.set("n", "<leader>b", "<cmd>buffers<CR>", {silent=true})
+    vim.keymap.set("n", "[b", "<cmd>bprevious<CR>", {silent=true})
+    vim.keymap.set("n", "]b", "<cmd>bnext<CR>", {silent=true})
+    
     --Exit insert mode in terminal (default is confusing)
     vim.keymap.set("t", "<C-[>", "<C-\\><C-N>", {noremap=true, silent=true})
 
@@ -44,6 +61,12 @@ if not vim.g.vscode then
     vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", {noremap=true, silent=true})
     vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", {noremap=true, silent=true})
 
-    -- Clear search highlights
-    vim.keymap.set("n", "<leader>c", ":nohl<CR>", {noremap=true, silent=true})
+    -- Reload configuration
+    local function reload()
+      dofile(vim.env.MYVIMRC)
+      print("Configuration reloaded")
+    end
+
+    vim.keymap.set("n", "<leader>ve", ":tabnew $MYVIMRC<CR>", {noremap=true, silent=true})
+    vim.keymap.set("n", "<leader>vs", reload, {noremap=true, silent=true})
 end
