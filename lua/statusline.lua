@@ -100,9 +100,9 @@ local ViMode = {
             v = { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
             V =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
             ["\22"] =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
-            c =  { fg = "orange", ctermfg = "orange_ct", bg = "gray", ctermbg = "gray_ct" },
-            s =  { fg = "purple", ctermfg = "purple_ct", bg = "gray", ctermbg = "gray_ct" },
-            S =  { fg = "purple", ctermfg = "purple_ct", bg = "gray", ctermbg = "gray_ct" },
+            c =  { fg = "purple", ctermfg = "purple_ct", bg = "gray", ctermbg = "gray_ct" },
+            s =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
+            S =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
             ["\19"] =  { fg = "purple", ctermfg = "purple_ct", bg = "gray", ctermbg = "gray_ct" },
             R =  { fg = "orange", ctermfg = "orange_ct", bg = "gray", ctermbg = "gray_ct" },
             r =  { fg = "orange", ctermfg = "orange_ct", bg = "gray", ctermbg = "gray_ct" },
@@ -401,12 +401,71 @@ local StatusLines = {
     SpecialStatusline, TerminalStatusline, InactiveStatusline, DefaultStatusline,
 }
 
+local WorkDir = {
+  provider = function()
+    local cwd = vim.fn.getcwd(0)
+    cwd = vim.fn.fnamemodify(cwd, ":~")
+    if not conditions.width_percent_below(#cwd, 0.25) then
+      cwd = vim.fn.pathshorten(cwd)
+    end
+    local trail = cwd:sub(-1) == '/' and ' ' or "/ "
+    return " " .. cwd .. trail
+  end,
+  hl = { bg = "purple", ctermbg = "purple_ct", fg = "bright_bg", ctermfg = "bright_bg_ct" },
+}
+
+local TabName = {
+  provider = function(self)
+    local is_not_float_win = function(winid)
+      return vim.api.nvim_win_get_config(winid).relative == ''
+    end
+    local win_ids = vim.tbl_filter(is_not_float_win, vim.api.nvim_tabpage_list_wins(self.tabpage))
+    local modified = function(self)
+      for _,win_id in ipairs(win_ids) do
+        if pcall(vim.api.nvim_win_get_buf, win_id) then
+          local bufid = vim.api.nvim_win_get_buf(win_id)
+          if vim.api.nvim_buf_get_option(bufid, "modified") then
+            return " +"
+          end
+        end
+      end
+      return ""
+    end
+    local num_wins = #win_ids
+    return "%" .. self.tabnr .. "T " .. self.tabnr .. ":" .. num_wins .. modified(self) .. " "
+  end,
+  hl = function(self)
+    if not self.is_active then
+      return { fg = "bright_fg", ctermfg = "bright_fg_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" }
+    else
+      return { fg = "bright_bg", ctermfg = "bright_bg_ct", bg = "bright_fg", ctermbg = "bright_fg_ct" }
+    end
+  end,
+}
+
+local TabPages = {
+  -- only show this component if there are 2 or more tabpages
+  condition = function()
+    return #vim.api.nvim_list_tabpages() >= 2
+  end,
+  utils.make_tablist(TabName),
+}
+
+local TabLine = {
+  WorkDir,TabPages,Align,
+}
+
 require("heirline").setup({
     statusline = StatusLines,
+    tabline = TabLine,
     opts = {
         colors = setup_colors,
     }
 })
+
+-- Options to enable tabline
+vim.o.showtabline = 2
+--vim.cmd([[au FileType * if index(['wipe', 'delete'], &bufhidden) >= 0 | set nobuflisted | endif]])
 
 vim.api.nvim_create_augroup("Heirline", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", {
