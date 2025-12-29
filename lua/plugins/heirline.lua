@@ -1,5 +1,4 @@
-return {
-   'rebelot/heirline.nvim', 
-   event = "UiEnter",
-   enabled = not vim.g.vscode,
-}
+-- Conditionally load only if not in VSCode
+if not vim.g.vscode then
+  vim.cmd("packadd! heirline.nvim")
+end

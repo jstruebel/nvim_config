@@ -18,7 +18,7 @@ end
 
 require "options"
 require "keymaps"
-require "lazy-config"
+require "plugins"
 
 if not vim.g.vscode then
     -- terminal mode configurations
