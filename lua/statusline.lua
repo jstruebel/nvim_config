@@ -37,12 +37,12 @@ local function setup_colors()
         diag_hint_ct = utils.get_highlight("DiagnosticHint").ctermfg,
         diag_info = utils.get_highlight("DiagnosticInfo").fg,
         diag_info_ct = utils.get_highlight("DiagnosticInfo").ctermfg,
-        git_del = utils.get_highlight("diffDeleted").fg,
-        git_del_ct = utils.get_highlight("diffDeleted").ctermfg,
-        git_add = utils.get_highlight("diffAdded").fg,
-        git_add_ct = utils.get_highlight("diffAdded").ctermfg,
-        git_change = utils.get_highlight("diffChanged").fg,
-        git_change_ct = utils.get_highlight("diffChanged").ctermfg,
+        git_del = utils.get_highlight("DiffDelete").fg,
+        git_del_ct = utils.get_highlight("DiffDelete").ctermfg,
+        git_add = utils.get_highlight("DiffAdd").fg,
+        git_add_ct = utils.get_highlight("DiffAdd").ctermfg,
+        git_change = utils.get_highlight("DiffChange").fg,
+        git_change_ct = utils.get_highlight("DiffChange").ctermfg,
     }
 end
 
