@@ -3,7 +3,7 @@
 	url = https://github.com/numToStr/Comment.nvim.git
 [submodule "pack/basic/opt/heirline.nvim"]
 	path = pack/basic/opt/heirline.nvim
-	url = git@github.com:jstruebel/heirline.nvim.git
+	url = https://github.com/jstruebel/heirline.nvim.git
 [submodule "pack/basic/start/gruvbox-flat.nvim"]
 	path = pack/basic/start/gruvbox-flat.nvim
 	url = https://github.com/eddyekofo94/gruvbox-flat.nvim.git
