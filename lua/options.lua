@@ -31,7 +31,7 @@ if not vim.g.vscode then
     opt.colorcolumn = { 120 }                           -- highlight out to column 120
 
     -- line wrapping
-    opt.wrap = true                                         -- enable line wrapping
+    opt.wrap = false                                        -- enable line wrapping
     opt.breakindent = true                                  -- keep wrapped lines on the same indent level
 
     -- scrolling offsets
