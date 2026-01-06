@@ -49,17 +49,28 @@ local function setup_colors()
 end
 
 local function highlight(hl)
-  if vim.o.termguicolors then
-    return { fg = hl.fg, bg = hl.bg, bold = hl.bold, force = hl.force }
-  else
+  local highlt = {}
+  if hl.bold then
+    highlt.bold = hl.bold
+  end
+  if hl.force then
+    highlt.force = hl.force
+  end
+  if hl.fg then
+    highlt.fg = hl.fg
+  end
+  if hl.bg then
+    highlt.bg = hl.bg
+  end
+  if not vim.o.termguicolors then
     if hl.fg then
-      hl.fg = hl.fg .. "_ct"
+      highlt.ctermfg = hl.fg .. "_ct"
     end
     if hl.bg then
-      hl.bg = hl.bg .. "_ct"
+      highlt.ctermbg = hl.bg .. "_ct"
     end
-    return { ctermfg = hl.fg, ctermbg = hl.bg, bold = hl.bold, force = hl.force }
   end
+  return highlt
 end
 
 local ViMode = {
