@@ -304,7 +304,7 @@ local ScrollBar ={
         local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
         return string.rep(self.sbar[i], 2)
     end,
-    hl = { fg = "blue", bg = "bright_bg", ctermfg = "blue_ct", ctermbg = "bright_bg_ct" },
+    hl = { fg = "cyan", bg = "bright_bg", ctermfg = "cyan_ct", ctermbg = "bright_bg_ct" },
 }
 
 local TerminalName = {
@@ -332,7 +332,7 @@ local HelpFileName = {
 
 local Align = { provider = "%=" }
 local Space = { provider = " " }
-local Separator = { provider = "| " }
+local Separator = { provider = "|" }
 
 local FlexFileInfo = {
     flexible = 2,
@@ -405,7 +405,7 @@ local WorkDir = {
   provider = function()
     local cwd = vim.fn.getcwd(0)
     cwd = vim.fn.fnamemodify(cwd, ":~")
-    if not conditions.width_percent_below(#cwd, 0.25) then
+    if not conditions.width_percent_below(#cwd, 0.33) then
       cwd = vim.fn.pathshorten(cwd)
     end
     local trail = cwd:sub(-1) == '/' and ' ' or "/ "
@@ -414,11 +414,12 @@ local WorkDir = {
   hl = { bg = "purple", ctermbg = "purple_ct", fg = "bright_bg", ctermfg = "bright_bg_ct" },
 }
 
+local is_not_float_win = function(winid)
+  return vim.api.nvim_win_get_config(winid).relative == ''
+end
+
 local TabName = {
   provider = function(self)
-    local is_not_float_win = function(winid)
-      return vim.api.nvim_win_get_config(winid).relative == ''
-    end
     local win_ids = vim.tbl_filter(is_not_float_win, vim.api.nvim_tabpage_list_wins(self.tabpage))
     local modified = function(self)
       for _,win_id in ipairs(win_ids) do
@@ -431,8 +432,20 @@ local TabName = {
       end
       return ""
     end
+    local filename = function(self)
+      for _,win_id in ipairs(win_ids) do
+        if pcall(vim.api.nvim_win_get_buf, win_id) then
+          local bufid = vim.api.nvim_win_get_buf(win_id)
+          fn = vim.api.nvim_buf_get_name(bufid)
+          fn = fn == "" and "[No Name]" or vim.fn.fnamemodify(fn, ":t")
+        end
+      end
+      return fn
+    end
     local num_wins = #win_ids
-    return "%" .. self.tabnr .. "T " .. self.tabnr .. ":" .. num_wins .. modified(self) .. " "
+    local tab = num_wins == 1 and filename(self) or num_wins
+
+    return "%" .. self.tabnr .. "T " .. self.tabnr .. ":" .. tab .. modified(self) .. " "
   end,
   hl = function(self)
     if not self.is_active then
@@ -451,8 +464,71 @@ local TabPages = {
   utils.make_tablist(TabName),
 }
 
+local function make_tabwinlist(win_component)
+  local winlist = {
+    init = function(self)
+      if self.is_active then
+        local win_ids = vim.tbl_filter(is_not_float_win, vim.api.nvim_tabpage_list_wins(self.tabpage))
+        self.num_wins = #win_ids
+        for i, win_id in ipairs(win_ids) do
+          local child = self[i]
+          if not (child and child.win_id == win_id) then
+            self[i] = self:new(win_component, i)
+            child = self[i]
+            child.win_id = win_id
+            child.win_idx = i
+          end
+          local buf_id = vim.api.nvim_win_get_buf(win_id)
+          child.buf_id = buf_id
+          local filename = vim.api.nvim_buf_get_name(buf_id)
+          filename = filename == "" and "[No Name]" or vim.fn.fnamemodify(filename, ":t")
+          child.filename = filename
+        end
+        if #self > #win_ids then
+          for i = #self, #win_ids + 1, -1 do
+            self[i] = nil
+          end
+        end
+      end
+    end,
+  }
+  return winlist
+end
+
+local WinName = {
+  provider = function(self)
+    return self.filename
+  end,
+}
+
+local WinSeparator = {
+  condition = function(self)
+    return not (self.win_idx == self.num_wins)
+  end,
+  hl = { fg = "cyan", ctermfg = "cyan_ct" },
+  Separator,
+}
+
+local WinNames = {
+  condition = function(self)
+    return (self.num_wins > 1 and self.is_active)
+  end,
+  { Space, WinName, Space, WinSeparator, },
+}
+
+local WinList = {
+  -- only show this component if there are 2 or more tabpages
+  condition = function()
+    return #vim.api.nvim_list_tabpages() >= 2
+  end,
+  flexible = 2,
+  hl = { fg = "bright_fg", ctermfg = "bright_fg_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" },
+  utils.make_tablist(make_tabwinlist(WinNames)),
+  { provider = "", },
+}
+
 local TabLine = {
-  WorkDir,TabPages,Align,
+  WorkDir,TabPages,Align,WinList,
 }
 
 require("heirline").setup({
