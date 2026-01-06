@@ -29,6 +29,8 @@ local function setup_colors()
         readonly_ct = utils.get_highlight("Constant").ctermfg,
         modified = utils.get_highlight("Special").fg,
         modified_ct = utils.get_highlight("Special").ctermfg,
+        type = utils.get_highlight("Type").fg,
+        type_ct = utils.get_highlight("Type").ctermfg,
         diag_warn = utils.get_highlight("DiagnosticWarn").fg,
         diag_warn_ct = utils.get_highlight("DiagnosticWarn").ctermfg,
         diag_error = utils.get_highlight("DiagnosticError").fg,
@@ -44,6 +46,20 @@ local function setup_colors()
         git_change = utils.get_highlight("DiffChange").fg,
         git_change_ct = utils.get_highlight("DiffChange").ctermfg,
     }
+end
+
+local function highlight(hl)
+  if vim.o.termguicolors then
+    return { fg = hl.fg, bg = hl.bg, bold = hl.bold, force = hl.force }
+  else
+    if hl.fg then
+      hl.fg = hl.fg .. "_ct"
+    end
+    if hl.bg then
+      hl.bg = hl.bg .. "_ct"
+    end
+    return { ctermfg = hl.fg, ctermbg = hl.bg, bold = hl.bold, force = hl.force }
+  end
 end
 
 local ViMode = {
@@ -95,19 +111,19 @@ local ViMode = {
             t = "T",
         },
         mode_colors = {
-            n = { fg = "bright_fg", ctermfg = "bright_fg_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" },
-            i = { fg = "green", ctermfg = "green_ct", bg = "gray", ctermbg = "gray_ct" },
-            v = { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
-            V =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
-            ["\22"] =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
-            c =  { fg = "purple", ctermfg = "purple_ct", bg = "gray", ctermbg = "gray_ct" },
-            s =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
-            S =  { fg = "cyan", ctermfg = "cyan_ct", bg = "gray", ctermbg = "gray_ct" },
-            ["\19"] =  { fg = "purple", ctermfg = "purple_ct", bg = "gray", ctermbg = "gray_ct" },
-            R =  { fg = "orange", ctermfg = "orange_ct", bg = "gray", ctermbg = "gray_ct" },
-            r =  { fg = "orange", ctermfg = "orange_ct", bg = "gray", ctermbg = "gray_ct" },
-            ["!"] =  { fg = "red", ctermfg = "red_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" },
-            t =  { fg = "red", ctermfg = "red_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" },
+            n = { fg = "bright_fg", bg = "bright_bg" },
+            i = { fg = "green", bg = "gray" },
+            v = { fg = "cyan", bg = "gray" },
+            V =  { fg = "cyan", bg = "gray" },
+            ["\22"] =  { fg = "cyan", bg = "gray" },
+            c =  { fg = "purple", bg = "gray" },
+            s =  { fg = "cyan", bg = "gray" },
+            S =  { fg = "cyan", bg = "gray" },
+            ["\19"] =  { fg = "purple", bg = "gray" },
+            R =  { fg = "orange", bg = "gray" },
+            r =  { fg = "orange", bg = "gray" },
+            ["!"] =  { fg = "red", bg = "bright_bg" },
+            t =  { fg = "red", bg = "bright_bg" },
         }
     },
 
@@ -126,7 +142,7 @@ local ViMode = {
     hl = function(self)
         local mode = self.mode:sub(1, 1) -- get only the first mode character
         -- Use fg to get background color due to reverse in StatusLine highlight
-        return { fg = self.mode_colors[mode].fg, bold = true, ctermfg = self.mode_colors[mode].ctermfg, bg = self.mode_colors[mode].bg, ctermbg = self.mode_colors[mode].ctermbg }
+        return highlight({fg = self.mode_colors[mode].fg, bg = self.mode_colors[mode].bg, bold = true})
     end,
 
     -- Re-evaluate the component only on ModeChanged event!
@@ -163,7 +179,7 @@ local FileName = {
         return filename
     end,
     -- Use bg to get foreground color due to reverse in StatusLine highlight
-    hl = { bg = "filename", ctermbg = "filename_ct" },
+    hl = highlight({bg = "filename"}),
 }
 
 local FlexFileName = {
@@ -171,7 +187,7 @@ local FlexFileName = {
         self.lfilename = vim.fn.fnamemodify(self.filename, ":.")
         if self.lfilename == "" then self.lfilename = "[No Name]" end
     end,
-    hl = { bg = "filename", ctermbg = "filename_ct" },
+    hl = highlight({bg = "filename"}),
 
     flexible = 2,
 
@@ -197,7 +213,7 @@ local FileFlags = {
         { provider = "+", },
         { provider = "", },
         -- Use bg to get foreground color due to reverse in StatusLine highlight
-        hl = { bg = "modified", ctermbg = "modified_ct" },
+        hl = highlight({bg = "modified"}),
     },
     {
         condition = function()
@@ -207,7 +223,7 @@ local FileFlags = {
         { provider = "[RO]", },
         { provider = "-R", },
         -- Use bg to get foreground color due to reverse in StatusLine highlight
-        hl = { bg = "readonly", ctermbg = "readonly_ct" },
+        hl = highlight({bg = "readonly"}),
     },
 }
 
@@ -220,11 +236,11 @@ local FileNameModifer = {
         if vim.bo.modified then
             -- Use bg to get foreground color due to reverse in StatusLine highlight
             -- use `force` because we need to override the child's hl foreground
-            return { bg = "modified", ctermbg = "modified_ct", bold = true, force=true }
+            return highlight({bg = "modified", bold = true, force = true})
         elseif not vim.bo.modifiable or vim.bo.readonly then
             -- Use bg to get foreground color due to reverse in StatusLine highlight
             -- use `force` because we need to override the child's hl foreground
-            return { bg = "readonly", ctermbg = "readonly_ct", bold = true, force=true }
+            return highlight({bg = "readonly", bold = true, force = true})
         end
     end,
 }
@@ -241,7 +257,7 @@ local FileType = {
         return string.upper(vim.bo.filetype)
     end,
     -- Use bg to get foreground color due to reverse in StatusLine highlight
-    hl = { bg = utils.get_highlight("Type").fg, ctermbg = utils.get_highlight("Type").ctermfg, bold = true },
+    hl = highlight({bg = "type", bold = true}),
 }
 
 local FileEncoding = {
@@ -304,7 +320,7 @@ local ScrollBar ={
         local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
         return string.rep(self.sbar[i], 2)
     end,
-    hl = { fg = "cyan", bg = "bright_bg", ctermfg = "cyan_ct", ctermbg = "bright_bg_ct" },
+    hl = highlight({fg = "cyan", bg = "bright"}),
 }
 
 local TerminalName = {
@@ -315,7 +331,7 @@ local TerminalName = {
         return " " .. tname
     end,
     -- Use bg to get foreground color due to reverse in StatusLine highlight
-    hl = { bg = "special", ctermbg = "special_ct", bold = true },
+    hl = highlight({bg = "special", bold = true}),
 }
 
 local HelpFileName = {
@@ -327,7 +343,7 @@ local HelpFileName = {
         return vim.fn.fnamemodify(filename, ":t")
     end,
     -- Use bg to get foreground color due to reverse in StatusLine highlight
-    hl = { bg = "special", ctermbg = "special_ct" },
+    hl = highlight({bg = "special"}),
 }
 
 local Align = { provider = "%=" }
@@ -378,7 +394,7 @@ local TerminalStatusline = {
     end,
 
     -- Use bg to get foreground color due to reverse in StatusLine highlight
-    hl = { bg = "dark_red", ctermbg = "dark_red_ct" },
+    hl = highlight({bg = "dark_red"}),
 
     -- Quickly add a condition to the ViMode to only show it when buffer is active!
     Space, { condition = conditions.is_active, ViMode, Space }, FileType, Space, TerminalName, Align,
@@ -411,7 +427,7 @@ local WorkDir = {
     local trail = cwd:sub(-1) == '/' and ' ' or "/ "
     return " " .. cwd .. trail
   end,
-  hl = { bg = "purple", ctermbg = "purple_ct", fg = "bright_bg", ctermfg = "bright_bg_ct" },
+  hl = highlight({fg = "bright_bg", bg = "purple"}),
 }
 
 local is_not_float_win = function(winid)
@@ -449,9 +465,9 @@ local TabName = {
   end,
   hl = function(self)
     if not self.is_active then
-      return { fg = "bright_fg", ctermfg = "bright_fg_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" }
+      return highlight({fg = "bright_fg", bg = "bright_bg"})
     else
-      return { fg = "bright_bg", ctermfg = "bright_bg_ct", bg = "bright_fg", ctermbg = "bright_fg_ct" }
+      return highlight({fg = "bright_bg", bg = "bright_fg"})
     end
   end,
 }
@@ -505,7 +521,7 @@ local WinSeparator = {
   condition = function(self)
     return not (self.win_idx == self.num_wins)
   end,
-  hl = { fg = "cyan", ctermfg = "cyan_ct" },
+  hl = highlight({fg = "cyan"}),
   Separator,
 }
 
@@ -522,7 +538,7 @@ local WinList = {
     return #vim.api.nvim_list_tabpages() >= 2
   end,
   flexible = 2,
-  hl = { fg = "bright_fg", ctermfg = "bright_fg_ct", bg = "bright_bg", ctermbg = "bright_bg_ct" },
+  hl = highlight({fg = "bright_fg", bg = "bright_bg"}),
   utils.make_tablist(make_tabwinlist(WinNames)),
   { provider = "", },
 }
