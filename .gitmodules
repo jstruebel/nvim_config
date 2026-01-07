@@ -4,9 +4,9 @@
 [submodule "pack/basic/opt/heirline.nvim"]
 	path = pack/basic/opt/heirline.nvim
 	url = https://github.com/jstruebel/heirline.nvim.git
-[submodule "pack/basic/start/gruvbox-flat.nvim"]
-	path = pack/basic/start/gruvbox-flat.nvim
-	url = https://github.com/eddyekofo94/gruvbox-flat.nvim.git
 [submodule "pack/basic/start/colorschemes.nvim"]
 	path = pack/basic/start/colorschemes.nvim
 	url = https://github.com/TheDreadedAndy/colorschemes.nvim.git
+[submodule "pack/basic/opt/gruvbox-material"]
+	path = pack/basic/opt/gruvbox-material
+	url = https://github.com/sainnhe/gruvbox-material.git
