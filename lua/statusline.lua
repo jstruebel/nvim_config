@@ -11,16 +11,20 @@ local function setup_colors()
         red_ct = utils.get_highlight("DiagnosticError").ctermfg,
         dark_red = utils.get_highlight("DiffDelete").bg,
         dark_red_ct = utils.get_highlight("DiffDelete").ctermbg,
-        green = utils.get_highlight("Include").fg,
-        green_ct = utils.get_highlight("Include").ctermfg,
+        green = vim.g.colors_name == "retrobox" and utils.get_highlight("Title").fg or utils.get_highlight("Green").fg,
+        green_ct = vim.g.colors_name == "retrobox" and utils.get_highlight("Title").ctermfg or utils.get_highlight("Green").ctermfg,
         gray = utils.get_highlight("NonText").fg,
         gray_ct = utils.get_highlight("NonText").ctermfg,
-        orange = utils.get_highlight("Special").fg,
-        orange_ct = utils.get_highlight("Special").ctermfg,
-        purple = utils.get_highlight("Constant").fg,
-        purple_ct = utils.get_highlight("Constant").ctermfg,
-        cyan = utils.get_highlight("Conceal").fg,
-        cyan_ct = utils.get_highlight("Conceal").ctermfg,
+        orange = vim.g.colors_name == "retrobox" and utils.get_highlight("Special").fg or utils.get_highlight("Orange").fg,
+        orange_ct = vim.g.colors_name == "retrobox" and utils.get_highlight("Special").ctermfg or utils.get_highlight("Orange").ctermfg,
+        purple = vim.g.colors_name == "retrobox" and utils.get_highlight("Constant").fg or utils.get_highlight("Purple").fg,
+        purple_ct = vim.g.colors_name == "retrobox" and utils.get_highlight("Constant").ctermfg or utils.get_highlight("Purple").ctermfg,
+        blue = vim.g.colors_name == "retrobox" and utils.get_highlight("Conceal").fg or utils.get_highlight("Blue").fg,
+        blue_ct = vim.g.colors_name == "retrobox" and utils.get_highlight("Conceal").ctermfg or utils.get_highlight("Blue").ctermfg,
+        aqua = vim.g.colors_name == "retrobox" and utils.get_highlight("Include").fg or utils.get_highlight("Aqua").fg,
+        aqua_ct = vim.g.colors_name == "retrobox" and utils.get_highlight("Include").ctermfg or utils.get_highlight("Aqua").ctermfg,
+        yellow = vim.g.colors_name == "retrobox" and utils.get_highlight("ModeMsg").fg or utils.get_highlight("Yellow").fg,
+        yellow_ct = vim.g.colors_name == "retrobox" and utils.get_highlight("ModeMsg").ctermfg or utils.get_highlight("Yellow").ctermfg,
         filename = utils.get_highlight("Directory").fg,
         filename_ct = utils.get_highlight("Directory").ctermfg,
         special = utils.get_highlight("Function").fg,
@@ -138,13 +142,13 @@ local ViMode = {
         },
         mode_colors = {
             n =       { fg = "bright_bg", bg = "bright_fg" },
-            i =       { fg = "gray",      bg = "green",    },
-            v =       { fg = "gray",      bg = "cyan",     },
-            V =       { fg = "gray",      bg = "cyan",     },
-            ["\22"] = { fg = "gray",      bg = "cyan",     },
+            i =       { fg = "gray",      bg = "aqua",    },
+            v =       { fg = "gray",      bg = "blue",     },
+            V =       { fg = "gray",      bg = "blue",     },
+            ["\22"] = { fg = "gray",      bg = "blue",     },
             c =       { fg = "gray",      bg = "purple",   },
-            s =       { fg = "gray",      bg = "cyan",     },
-            S =       { fg = "gray",      bg = "cyan",     },
+            s =       { fg = "gray",      bg = "blue",     },
+            S =       { fg = "gray",      bg = "blue",     },
             ["\19"] = { fg = "gray",      bg = "purple",   },
             R =       { fg = "gray",      bg = "orange",   },
             r =       { fg = "gray",      bg = "orange",   },
@@ -339,7 +343,7 @@ local ScrollBar ={
         local i = math.floor((curr_line - 1) / lines * #self.sbar) + 1
         return string.rep(self.sbar[i], 2)
     end,
-    hl = highlight(sl_reverse, {fg = "bright", bg = "cyan"}),
+    hl = highlight(sl_reverse, {fg = "bright", bg = "blue"}),
 }
 
 local TerminalName = {
@@ -443,7 +447,7 @@ local WorkDir = {
     local trail = cwd:sub(-1) == vim.g.pathsep and ' ' or vim.g.pathsep .. " "
     return " " .. cwd .. trail
   end,
-  hl = highlight(false, {fg = "bright_bg", bg = "purple"}),
+  hl = highlight(false, {fg = "bright_bg", bg = "aqua"}),
 }
 
 local is_not_float_win = function(winid)
@@ -537,7 +541,7 @@ local WinSeparator = {
   condition = function(self)
     return not (self.win_idx == self.num_wins)
   end,
-  hl = highlight(false, {fg = "cyan"}),
+  hl = highlight(false, {fg = "blue"}),
   Separator,
 }
 
