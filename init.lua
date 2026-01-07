@@ -14,6 +14,11 @@ if not vim.g.vscode then
     vim.g.windows = vim.fn.has("win32") or vim.fn.has("win64")
     vim.g.is_usb = os.getenv("NEOVIM_USB")
     vim.g.is_ide = os.getenv("NEOVIM_IDE")
+    if vim.g.windows then
+      vim.g.pathsep = "\\"
+    else
+      vim.g.pathsep = "/"
+    end
 end
 
 require "options"

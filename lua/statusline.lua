@@ -435,7 +435,7 @@ local WorkDir = {
     if not conditions.width_percent_below(#cwd, 0.33) then
       cwd = vim.fn.pathshorten(cwd)
     end
-    local trail = cwd:sub(-1) == '/' and ' ' or "/ "
+    local trail = cwd:sub(-1) == vim.g.pathsep and ' ' or vim.g.pathsep .. " "
     return " " .. cwd .. trail
   end,
   hl = highlight({fg = "bright_bg", bg = "purple"}),
