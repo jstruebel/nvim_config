@@ -25,6 +25,10 @@ require "options"
 require "keymaps"
 require "plugins"
 
+if vim.g.neovide then
+  require "gui"
+end
+
 if not vim.g.vscode then
     -- terminal mode configurations
     require "colorscheme"
