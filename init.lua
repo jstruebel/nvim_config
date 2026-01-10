@@ -31,6 +31,7 @@ if not vim.g.vscode then
     require "gui"
     require "colorscheme"
     require "statusline"
+    require "workdir"
     if vim.g.is_ide then
         -- Add IDE Plugin Configuration
         --sessions
