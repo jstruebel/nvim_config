@@ -11,8 +11,8 @@ vim.g.maplocalleader = " " -- use space
 
 if not vim.g.vscode then
     -- set variables to control configuration
-    vim.g.windows = vim.fn.has("win32") or vim.fn.has("win64")
-    vim.g.macos = vim.fn.has("mac")
+    vim.g.windows = (vim.fn.has("win32") or vim.fn.has("win64")) == 1
+    vim.g.macos = vim.fn.has("mac") == 1
     vim.g.is_usb = os.getenv("NEOVIM_USB")
     vim.g.is_ide = os.getenv("NEOVIM_IDE")
     if vim.g.windows then
