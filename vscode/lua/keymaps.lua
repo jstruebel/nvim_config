@@ -8,27 +8,27 @@ vim.g.maplocalleader = " " -- use space
 -- Map commenting toggles to match numToStr/Comment.nvim
 local vscode = require("vscode")
 local function esc()
-    local key = vim.api.nvim_replace_termcodes("<esc>", true, true, true)
-    vim.api.nvim_feedkeys(key, "n", false)
+  local key = vim.api.nvim_replace_termcodes("<esc>", true, true, true)
+  vim.api.nvim_feedkeys(key, "n", false)
 end
 local comment_block = vscode.to_op(function (ctx)
-   local cmd = "editor.action.blockComment"
-   local opts = { range = ctx.range, callback = esc }
-   vscode.action(cmd, opts)
+  local cmd = "editor.action.blockComment"
+  local opts = { range = ctx.range, callback = esc }
+  vscode.action(cmd, opts)
 end)
 local comment_line = vscode.to_op(function (ctx)
-   local cmd = "editor.action.commentLine"
-   local opts = { range = ctx.range, callback = esc }
-   if ctx.is_linewise and ctx.is_current_line then
+  local cmd = "editor.action.commentLine"
+  local opts = { range = ctx.range, callback = esc }
+  if ctx.is_linewise and ctx.is_current_line then
     opts.range = nil
-   end
-   vscode.action(cmd, opts)
+  end
+  vscode.action(cmd, opts)
 end)
 local comment_line_line = function ()
-    return comment_line() .. "_"
+  return comment_line() .. "_"
 end
 local comment_block_line = function ()
-    return comment_block() .. "_"
+  return comment_block() .. "_"
 end
 map({"x", "n", "o" }, "gc", comment_line, { expr = true, desc = "Comment with line style" })
 map("n", "gcc", comment_line_line, { expr = true, desc = "Comment with line style" })
