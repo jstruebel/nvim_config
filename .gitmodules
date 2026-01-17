@@ -10,3 +10,6 @@
 [submodule "pack/basic/opt/gruvbox-material"]
 	path = pack/basic/opt/gruvbox-material
 	url = https://github.com/sainnhe/gruvbox-material.git
+[submodule "guess-indent.nvim"]
+	path = pack/basic/opt/guess-indent.nvim
+	url = https://github.com/NMAC427/guess-indent.nvim.git
