@@ -38,6 +38,7 @@ if not vim.g.vscode then
   map("n", "<C-j>", "<C-w>j", {noremap=true, silent=true,desc="Move to window below current"})
   map("n", "<C-k>", "<C-w>k", {noremap=true, silent=true,desc="Move to window above current"})
   map("n", "<C-l>", "<C-w>l", {noremap=true, silent=true,desc="Move to window on right of current"})
+  map("n", "<C-\\>", "<C-w>p", {noremap=true, silent=true,desc="Move to previously active window"})
 
   -- Move between windows/splits from terminal
   map("t", "<C-h>", "<cmd>wincmd h", {silent=true,desc="Move to window on left of current"})
