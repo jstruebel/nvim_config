@@ -1,4 +1,5 @@
 require "plugins.comment"
 require "plugins.heirline"
+require "plugins.nvim-tmux-navigation"
 require "plugins.gruvbox-material"
 require "plugins.guess-indent"
