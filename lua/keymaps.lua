@@ -41,10 +41,10 @@ if not vim.g.vscode then
   map("n", "<C-\\>", "<C-w>p", {noremap=true, silent=true,desc="Move to previously active window"})
 
   -- Move between windows/splits from terminal
-  map("t", "<C-h>", "<cmd>wincmd h", {silent=true,desc="Move to window on left of current"})
-  map("t", "<C-j>", "<cmd>wincmd j", {silent=true,desc="Move to window below current"})
-  map("t", "<C-k>", "<cmd>wincmd k", {silent=true,desc="Move to window above current"})
-  map("t", "<C-l>", "<cmd>wincmd l", {silent=true,desc="Move to window on right of current"})
+  map("t", "<C-h>", "<cmd>wincmd h<cr>", {silent=true,desc="Move to window on left of current"})
+  map("t", "<C-j>", "<cmd>wincmd j<cr>", {silent=true,desc="Move to window below current"})
+  map("t", "<C-k>", "<cmd>wincmd k<cr>", {silent=true,desc="Move to window above current"})
+  map("t", "<C-l>", "<cmd>wincmd l<cr>", {silent=true,desc="Move to window on right of current"})
 
   -- Resize windows using arrow keys
   map("n", "<C-Up>", ":resize -2<CR>", {noremap=true, silent=true,desc="Resize window up"})

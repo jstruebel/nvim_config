@@ -350,8 +350,22 @@ local TerminalName = {
   -- we could add a condition to check that buftype == 'terminal'
   -- or we could do that later (see #conditional-statuslines below)
   provider = function()
+    local function get_term_cwd()
+      if vim.bo.buftype ~= "terminal" then return "" end
+      
+      -- Fallback to original buffer name if OSC 7 hasn't fired yet
+      local path = vim.b.terminal_cwd or vim.api.nvim_buf_get_name(0):match("^term://(.-)//") or ""
+      
+      -- Normalize paths for Windows/Unix home directory shortening
+      local home = vim.env.HOME or vim.env.USERPROFILE or ""
+      if home ~= "" then
+        path = path:gsub("^" .. vim.pesc(home), "~")
+      end
+      return path
+    end
+
     local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-    return " " .. tname
+    return tname .. ":" .. get_term_cwd()
   end,
   hl = highlight(sl_reverse, {fg = "special", bold = true}),
 }
