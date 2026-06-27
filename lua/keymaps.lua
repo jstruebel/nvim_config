@@ -53,8 +53,8 @@ if not vim.g.vscode then
   map("n", "<C-left>", ":vertical resize +2<CR>", {noremap=true, silent=true,desc="Resize window to left"})
 
   -- Manage Window Splits
-  map("n", "<leader>wv", "<C-w>v", {silent=true,desc="Open new window to right (vertical)"})
-  map("n", "<leader>wh", "<C-w>s", {silent=true,desc="Open new window below (horizontal)"})
+  map("n", "<leader>wv", "<cmd>vnew<CR>", {silent=true,desc="Open new window to right (vertical)"})
+  map("n", "<leader>wh", "<cmd>new<CR>", {silent=true,desc="Open new window below (horizontal)"})
   map("n", "<leader>we", "<C-w>=", {silent=true,desc="Make windows equal"})
   map("n", "<leader>wr", "<C-w>r", {silent=true,desc="Move window to the right/down"})
   map("n", "<leader>wR", "<C-w>R", {silent=true,desc="Move window to the left/up"})
@@ -62,17 +62,25 @@ if not vim.g.vscode then
   map("n", "<leader>wJ", "<C-w>J", {silent=true,desc="Move window to the bottom, full width"})
   map("n", "<leader>wK", "<C-w>K", {silent=true,desc="Move window to the top, full width"})
   map("n", "<leader>wL", "<C-w>L", {silent=true,desc="Move window to the right, full height"})
+  map("n", "<leader>wtv", "<cmd>vert te<CR>", {silent=true,desc="Open new terminal window to right (vertical)"})
+  map("n", "<leader>wth", "<cmd>hor te<CR>", {silent=true,desc="Open new terminal window below (horizontal)"})
+  map("n", "<leader>wfv", "<C-w>v", {silent=true,desc="Open new window to right with current file (vertical)"})
+  map("n", "<leader>wfh", "<C-w>s", {silent=true,desc="Open new window below with current file (horizontal)"})
   
   -- Manage Tabs
   map("n", "<leader>tn", "<cmd>tabnew<CR>", {silent=true,desc="Open new tab"})
   map("n", "<leader>tf", "<cmd>tabnew %<CR>", {silent=true,desc="Open new tab with current file"})
   map("n", "<leader>tc", "<cmd>tabclose<CR>", {silent=true,desc="Close current tab"})
   map("n", "<leader>to", "<cmd>tabonly<CR>", {silent=true,desc="Close all other tabs"})
+  map("n", "<leader>tt", "<cmd>tabnew <bar> te <CR>", {silent=true,desc="Open new tab with terminal"})
 
-  -- Navigate Buffers
-  map("n", "<leader>b", "<cmd>buffers<CR>", {silent=true,desc="Display all open buffers"})
-  map("n", "[b", "<cmd>bprevious<CR>", {silent=true,desc="Load previous buffer in current window"})
-  map("n", "]b", "<cmd>bnext<CR>", {silent=true,desc="Load next buffer in current window"})
+  -- Manage Buffers
+  map("n", "<leader>bl", "<cmd>buffers<CR>", {silent=true,desc="List all open buffers"})
+  map("n", "<leader>bp", "<cmd>bprevious<CR>", {silent=true,desc="Load previous buffer in current window"})
+  map("n", "<leader>bn", "<cmd>bnext<CR>", {silent=true,desc="Load next buffer in current window"})
+  map("n", "<leader>bd", "<cmd>bp|bd #<CR>", {silent=true,desc="Close current buffer without closing window"})
+  map("n", "<leader>bt", "<cmd>term<CR>", {silent=true,desc="Open new terminal in current window"})
+  map("n", "<leader>bb", "<cmd>enew<CR>", {silent=true,desc="Open new buffer in current window"})
   
   --Exit insert mode in terminal (default is confusing)
   map("t", "<C-[>", "<C-\\><C-N>", {noremap=true, silent=true,desc="Exit insert mode (terminal)"})
