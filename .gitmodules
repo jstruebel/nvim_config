@@ -15,4 +15,4 @@
 	url = https://github.com/NMAC427/guess-indent.nvim.git
 [submodule "pack/basic/opt/nvim-tmux-navigation"]
 	path = pack/basic/opt/nvim-tmux-navigation
-	url = https://github.com/alexghergh/nvim-tmux-navigation.git
+	url = https://github.com/jstruebel/nvim-tmux-navigation.git

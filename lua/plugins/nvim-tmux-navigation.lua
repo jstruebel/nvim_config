@@ -17,9 +17,13 @@ if not vim.g.vscode then
   map("n", "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive, {noremap=true, silent=true,desc="Move to previously active window"})
 
   -- Set tmux variable when nvim is active using autocommands
-  if vim.env.TMUX then
+  if vim.env.TMUX and not vim.g.windows then
     local function tmux_command(command)
-      local tmux_socket = vim.fn.split(vim.env.TMUX, ",")[1]
+      local tmux_split = 1
+      if vim.g.windows then
+        tmux_split = 2
+      end
+      local tmux_socket = vim.split(vim.env.TMUX, ",")[tmux_split]
       return vim.fn.system("tmux -S " .. tmux_socket .. " " .. command)
     end
 
