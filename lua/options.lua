@@ -61,4 +61,21 @@ if not vim.g.vscode then
   opt.backupdir = vim.fn.stdpath("data") .. "/backup"     -- set location for backup files
   opt.directory = vim.fn.stdpath("data") .. "/swp"        -- set location for swap files
   opt.undofile = true                                     -- enable undo file
+
+  -- Set shell used for terminal on Windows
+  -- Use Powershell Core if available, fallback to Windows Powershell
+  if vim.g.windows then
+    if vim.fn.executable('pwsh') == 1 then
+      opt.shell = 'pwsh'
+    else
+      opt.shell = 'powershell'
+    end
+    
+    -- Configurations for Powershell
+    opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+    opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+    opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+    opt.shellquote = ""
+    opt.shellxquote = ""
+  end
 end
