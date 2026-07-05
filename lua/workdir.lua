@@ -1,3 +1,9 @@
+-- Workdir requires neovim >= 0.8 to use the vim.fs module
+if not (vim.fn.has("nvim-0.8") == 1) then
+  vim.notify("The workdir plugin requires Neovim 0.8 or higher, skipping it.", vim.log.levels.WARNING)
+  return
+end
+
 -- List of file/directory patterns that indicate the parent directory
 -- is a project root
 local root_patterns = { ".git", ".nvim", ".vscode" }
